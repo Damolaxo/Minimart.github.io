@@ -1,0 +1,22 @@
+<!-- login.html -->
+{% extends "base.html" %}
+{% block title %}Login - MyShop{% endblock %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <h3>Login</h3>
+      <form method="post" action="{{ url_for('login') }}">
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input name="email" type="email" required class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input name="password" type="password" required class="form-control">
+        </div>
+        <button class="btn btn-primary">Login</button>
+        <a href="{{ url_for('register') }}" class="btn btn-link">Create account</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}
