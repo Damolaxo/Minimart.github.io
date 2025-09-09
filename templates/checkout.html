@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Checkout - MyShop{% endblock %}
+{% block content %}
+  <h3>Checkout</h3>
+  <div class="row">
+    <div class="col-md-7">
+      <form method="post" action="{{ url_for('process_checkout') }}">
+        <h5>Shipping details</h5>
+        <div class="mb-3">
+          <label for="full_name" class="form-label">Full name</label>
+          <input id="full_name" name="full_name" required class="form-control" value="{{ user.full_name if user else '' }}">
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">Address</label>
+          <input id="address" name="address" required class="form-control" value="{{ user.address if user else '' }}">
+        </div>
+        <div class="mb-3">
+          <label for="city" class="form-label">City</label>
+          <input id="city" name="city" required class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="postal" class="form-label">Postal code</label>
+          <input id="postal" name="postal" required class="form-control">
+        </div>
+
+        <h5>Payment</h5>
+        <div class="mb-3">
+          <label class="form-label">Card number</label>
+          <input name="card_number" required class="form-control">
+        </div>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <input name="expiry" placeholder="MM/YY" required class="form-control">
+          </div>
+          <div class="col-md-4 mb-3">
+            <input name="cvc" placeholder="CVC" required class="form-control">
+          </div>
+        </div>
+
+        <button class="btn btn-success">Pay ${{ "%.2f"|format(cart_subtotal) }}</button>
+      </form>
+    </div>
+
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-body">
+          <h6>Order summary</h6>
+          <ul class="list-unstyled">
+            {% for item in cart_items %}
+              <li class="d-flex justify-content-between">
+                <span>{{ item.product.title }} x{{ item.qty }}</span>
+                <strong>${{ "%.2f"|format(item.product.price * item.qty) }}</strong>
+              </li>
+            {% endfor %}
+          </ul>
+          <hr>
+          <p class="d-flex justify-content-between"><span>Subtotal</span><strong>${{ "%.2f"|format(cart_subtotal) }}</strong></p>
+          <p class="d-flex justify-content-between"><span>Shipping</span><strong>${{ "%.2f"|format(shipping or 0) }}</strong></p>
+          <p class="d-flex justify-content-between"><span>Total</span><strong>${{ "%.2f"|format(cart_subtotal + (shipping or 0)) }}</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
